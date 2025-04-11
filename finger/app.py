@@ -57,6 +57,7 @@ if uploaded_video is not None:
 
     st.info("Video işleniyor...")
 
+    # Video işleme
     while cap.isOpened():
         success, img = cap.read()
         if not success:
@@ -94,7 +95,6 @@ if uploaded_video is not None:
 
     cap.release()
 
-    # Videoyu tekrar yazalım
     h, w, _ = output_frames[0].shape
     out_temp = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
     out = cv2.VideoWriter(out_temp.name, cv2.VideoWriter_fourcc(*'mp4v'), 25, (w, h))
@@ -103,6 +103,8 @@ if uploaded_video is not None:
         out.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
     out.release()
 
+    # İndirme butonu
     with open(out_temp.name, 'rb') as f:
         st.download_button("📥 İşlenmiş Videoyu İndir", f, file_name="el_tespiti.mp4")
 
+    st.success("Video işleme tamamlandı.")
